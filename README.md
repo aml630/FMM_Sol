@@ -16,7 +16,7 @@ Upon researching deligate calls I learned I needed to have all the local variabl
 
 **NonDeligate_1**
 
-Goal: Have Users Local Wallet Make Initial Call ==> Hit Proxy Contract ==> Hit FixedProductMarketMaker
+Goal: Load Proxy Contract With USDC + MATIC ==> Hit FixedProductMarketMaker
 
 Results:
 
