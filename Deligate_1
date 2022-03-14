@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.0;
+
+import { IERC1155 } from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
+import { IFixedProductMarketMaker } from "./interfaces/IFixedProductMarketMaker.sol";
+
+contract SlippageProtectedLiquidityAdder {
+    IERC1155 public immutable conditionalTokens;
+
+    constructor(IERC1155 _conditionalTokens) {
+        conditionalTokens = _conditionalTokens;
+    }
+
+    /**
+     * @dev Should be invoked through a delegate call
+     */
+    function addFunding(
+        IFixedProductMarketMaker marketMaker,
+        uint256 amount,
+        uint256[] memory distributionHint,
+        uint256 positionId,
+        uint256 minRefund,
+        uint256 maxRefund
+    ) public {
+        uint256 balanceBefore = conditionalTokens.balanceOf(address(this), positionId);
+        marketMaker.addFunding(amount, distributionHint);
+        uint256 refund = conditionalTokens.balanceOf(address(this), positionId) - balanceBefore;
+        require(refund >= minRefund && refund <= maxRefund, "Max slippage exceeded");
+    }
+}
