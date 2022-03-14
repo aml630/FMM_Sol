@@ -48,13 +48,6 @@ contract PolyTrader {
         return succ;
     }
 
-    function approveThis(
-    uint256 amount
-    ) external returns (bool) {     
-        bool succ = usdcTokens.approve(address(this), amount+100);
-        return succ;
-    }
-
     function addFunding(
         IFixedProductMarketMaker marketMaker,
         uint256 addedFunds,
